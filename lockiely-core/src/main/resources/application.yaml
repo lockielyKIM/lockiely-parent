@@ -1,0 +1,85 @@
+spring:
+  application:
+    name: lockiely
+  datasource:
+    druid:
+      initial-size: 10
+      name: lijin
+    dynamic:
+      master:
+        url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false
+        username: root
+        password: root
+      slaves:
+        one:
+          url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          username: root
+          password: root
+        two:
+          url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          username: root
+          password: root
+#  profiles:
+#    active: dev
+  mvc:
+    message-codes-resolver-format: prefix_error_code
+    locale: zh_CN
+  redis:
+    host: localhost
+    port: 6379
+
+#  dynamic:
+#    datasource:
+#      master:
+#      slave:
+#        jdbc-url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false
+#        username: root
+#        password: root
+  #datasource
+
+#  datasource:
+##    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false
+#    username: root
+#    password: root
+##    type: com.zaxxer.hikari.HikariDataSource
+#    hikari:
+#      maximum-pool-size: 10
+#      minimum-idle: 5
+
+server:
+  port: 7777
+
+
+
+#mybatis-plus配置
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  type-aliases-package: org.lockiely.persistence.entity
+  typeEnumsPackage: org.lockiely.persistence.entity.enums
+  global-config:
+    id-type: 2
+    field-strategy: 2
+    db-column-underline: true
+    refresh-mapper: true
+    capital-mode: true
+#    key-generator: com.baomidou.mybatisplus.incrementer.OracleKeyGenerator
+    logic-delete-value: 1
+    logic-not-delete-value: 0
+#    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+    sql-parser-cache: true
+
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    jdbc-type-for-null: 'null'
+    default-executor-type: batch
+logging:
+  level.org.springframework: debug
+  level.org.lockiely: debug
+
+
+#自定义注解
+lockiely:
+  cache-type: redisCache
+
