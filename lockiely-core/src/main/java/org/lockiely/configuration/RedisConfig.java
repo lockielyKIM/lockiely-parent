@@ -1,6 +1,10 @@
 package org.lockiely.configuration;
 
-import org.lockiely.cache.redis.RedisObjectSerializer;
+import com.alibaba.fastjson.parser.Feature;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
+import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
+import org.lockiely.cache.redis.FastJsonRedisObjectSerializer;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,11 +23,16 @@ public class RedisConfig {
         return redisCacheManager;
     }
 
+    @Bean
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory factory){
         RedisTemplate<Object, Object> redisTemplate = new RedisTemplate<>();
+        FastJsonRedisObjectSerializer redisObjectSerializer = new FastJsonRedisObjectSerializer(Object.class);
         redisTemplate.setConnectionFactory(factory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new RedisObjectSerializer());
+        redisTemplate.setValueSerializer(redisObjectSerializer);
+        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        redisTemplate.setHashValueSerializer(redisObjectSerializer);
+        redisTemplate.setDefaultSerializer(redisObjectSerializer);
         return redisTemplate;
     }
 

@@ -3,8 +3,12 @@ package org.lockiely.web.controller;
 import java.util.Date;
 import javax.validation.Valid;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
+import org.apache.shiro.authc.ExpiredCredentialsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.lockiely.exception.BusinessException;
@@ -49,16 +53,29 @@ public class UserController extends BaseController{
 
         try {
             currentUser.login(token);
-        }catch (IncorrectCredentialsException ex1){
-            Integer loginRetryNum = ShiroLocalContextHolder.getAccountLoginRetryNum(user.getAccount());
-            UserLoginHandler userLoginHandler = new UserLoginHandler();
-            userLoginHandler.setErrorMsg("密码错误");
-            userLoginHandler.setLoginRetryNum(loginRetryNum);
-            return userLoginHandler;
-        }catch (ExcessiveAttemptsException ex2){
-            UserLoginHandler userLoginHandler = new UserLoginHandler();
-            userLoginHandler.setErrorMsg("密码重试超过5次，已锁定");
-            return userLoginHandler;
+        }catch(Exception ex) {
+                UserLoginHandler userLoginHandler = new UserLoginHandler();
+            if (ex instanceof IncorrectCredentialsException) {
+                Integer loginRetryNum = ShiroLocalContextHolder.getAccountLoginRetryNum(user.getAccount());
+                userLoginHandler.setErrorMsg("密码错误");
+                userLoginHandler.setLoginRetryNum(loginRetryNum);
+                return userLoginHandler;
+            }else if(ex instanceof ExcessiveAttemptsException) {
+                userLoginHandler.setErrorMsg("密码重试超过5次，已锁定");
+                return userLoginHandler;
+            }else if(ex instanceof LockedAccountException) {
+                userLoginHandler.setErrorMsg("账号已被锁定");
+                return userLoginHandler;
+            }else if(ex instanceof DisabledAccountException) {
+                userLoginHandler.setErrorMsg("账号已被禁用");
+                return userLoginHandler;
+            }else if(ex instanceof ExpiredCredentialsException) {
+                userLoginHandler.setErrorMsg("账号已过期");
+                return userLoginHandler;
+            }else if(ex instanceof UnknownAccountException) {
+                userLoginHandler.setErrorMsg("账号不存在");
+                return userLoginHandler;
+            }
         }
 
 //        ShiroUser shiroUser = ShiroUtils.getUser();
@@ -122,6 +139,10 @@ public class UserController extends BaseController{
         String errorMsg;
 
         final int MAX_LOGIN_RETRY_NUM = 5;
+
+        UserLoginHandler(){
+
+        }
 
         public Integer getLoginRetryNum() {
             return LoginRetryNum;

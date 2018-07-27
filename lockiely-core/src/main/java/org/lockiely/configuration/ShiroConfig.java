@@ -14,11 +14,12 @@ import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.Cookie;
 import org.apache.shiro.web.servlet.SimpleCookie;
-import org.lockiely.shiro.DefaultSessionManager;
-import org.lockiely.shiro.RedisSessionDao;
+import org.lockiely.shiro.session.DefaultSessionManager;
+import org.lockiely.shiro.session.RedisSessionDao;
 import org.lockiely.shiro.RedisShiroCacheManager;
 import org.lockiely.shiro.RetryLimitHashedCredentialsMatcher;
 import org.lockiely.shiro.ShiroDbRealm;
+import org.lockiely.shiro.session.ShireSessionFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -147,6 +148,9 @@ public class ShiroConfig {
         cookie.setName("lockiely-shiro-cookie");
 //        cookie.setHttpOnly(true);
         sessionManager.setSessionIdCookie(cookie);
+
+        //重新定义session
+        sessionManager.setSessionFactory(new ShireSessionFactory());
         return sessionManager;
     }
 
