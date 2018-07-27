@@ -1,4 +1,4 @@
-package org.lockiely.shiro;
+package org.lockiely.shiro.session;
 
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
@@ -60,6 +60,11 @@ public class RedisSessionDao extends EnterpriseCacheSessionDAO {
         return session;
     }
 
+    /**
+     * 此时的session 用户全局的过期时间
+     * 这里是用的lockielyProperties中自定义的过期时间，在这里这两者是一致的。
+     * @param session
+     */
     @Override
     protected void doUpdate(Session session) {
         super.doUpdate(session);

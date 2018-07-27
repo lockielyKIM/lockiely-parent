@@ -30,7 +30,7 @@ public class SpringContextHolder implements ApplicationContextAware {
     }
 
     public Object getBean(String beanName){
-        return getBean(beanName, null);
+        return getBean(beanName, new Object[]{});
     }
 
     public Object getBean(String beanName, Object... args){
