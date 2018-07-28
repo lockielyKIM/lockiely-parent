@@ -1,8 +1,10 @@
 package org.lockiely.configuration;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.serializer.ValueFilter;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,6 +43,13 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
+        FastJsonConfig fastJsonConfig = new FastJsonConfig();
+        fastJsonConfig.setSerializerFeatures(
+            SerializerFeature.PrettyFormat,
+            SerializerFeature.WriteMapNullValue
+        );
+        fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
+        fastConverter.setFastJsonConfig(fastJsonConfig);
         converters.add(0, fastConverter);
         super.configureMessageConverters(converters);
     }

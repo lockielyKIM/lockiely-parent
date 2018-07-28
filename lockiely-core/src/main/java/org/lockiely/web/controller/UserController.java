@@ -54,28 +54,7 @@ public class UserController extends BaseController{
         try {
             currentUser.login(token);
         }catch(Exception ex) {
-                UserLoginHandler userLoginHandler = new UserLoginHandler();
-            if (ex instanceof IncorrectCredentialsException) {
-                Integer loginRetryNum = ShiroLocalContextHolder.getAccountLoginRetryNum(user.getAccount());
-                userLoginHandler.setErrorMsg("密码错误");
-                userLoginHandler.setLoginRetryNum(loginRetryNum);
-                return userLoginHandler;
-            }else if(ex instanceof ExcessiveAttemptsException) {
-                userLoginHandler.setErrorMsg("密码重试超过5次，已锁定");
-                return userLoginHandler;
-            }else if(ex instanceof LockedAccountException) {
-                userLoginHandler.setErrorMsg("账号已被锁定");
-                return userLoginHandler;
-            }else if(ex instanceof DisabledAccountException) {
-                userLoginHandler.setErrorMsg("账号已被禁用");
-                return userLoginHandler;
-            }else if(ex instanceof ExpiredCredentialsException) {
-                userLoginHandler.setErrorMsg("账号已过期");
-                return userLoginHandler;
-            }else if(ex instanceof UnknownAccountException) {
-                userLoginHandler.setErrorMsg("账号不存在");
-                return userLoginHandler;
-            }
+
         }
 
 //        ShiroUser shiroUser = ShiroUtils.getUser();
@@ -132,32 +111,5 @@ public class UserController extends BaseController{
         return "success";
     }
 
-    class UserLoginHandler {
 
-        Integer LoginRetryNum;
-
-        String errorMsg;
-
-        final int MAX_LOGIN_RETRY_NUM = 5;
-
-        UserLoginHandler(){
-
-        }
-
-        public Integer getLoginRetryNum() {
-            return LoginRetryNum;
-        }
-
-        public void setLoginRetryNum(Integer loginRetryNum) {
-            LoginRetryNum = loginRetryNum;
-        }
-
-        public String getErrorMsg() {
-            return errorMsg;
-        }
-
-        public void setErrorMsg(String errorMsg) {
-            this.errorMsg = errorMsg;
-        }
-    }
 }
