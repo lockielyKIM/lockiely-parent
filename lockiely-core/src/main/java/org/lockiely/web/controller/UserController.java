@@ -51,11 +51,7 @@ public class UserController extends BaseController{
         UsernamePasswordToken token = new UsernamePasswordToken(user.getAccount(), user.getPassword().toCharArray());
         token.setRememberMe(true);
 
-        try {
-            currentUser.login(token);
-        }catch(Exception ex) {
-
-        }
+        currentUser.login(token);
 
 //        ShiroUser shiroUser = ShiroUtils.getUser();
 //        HttpRequestUtils.getRequest().getSession().setAttribute("shiroUser", shiroUser);
