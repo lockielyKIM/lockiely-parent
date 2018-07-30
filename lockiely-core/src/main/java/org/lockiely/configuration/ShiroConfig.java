@@ -20,6 +20,7 @@ import org.lockiely.shiro.RedisShiroCacheManager;
 import org.lockiely.shiro.RetryLimitHashedCredentialsMatcher;
 import org.lockiely.shiro.ShiroDbRealm;
 import org.lockiely.shiro.session.ShireSessionFactory;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -196,4 +197,10 @@ public class ShiroConfig {
         return authorizationAttributeSourceAdvisor;
     }
 
+    @Bean
+    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator(){
+        DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
+        defaultAdvisorAutoProxyCreator.setProxyTargetClass(true);
+        return defaultAdvisorAutoProxyCreator;
+    }
 }
