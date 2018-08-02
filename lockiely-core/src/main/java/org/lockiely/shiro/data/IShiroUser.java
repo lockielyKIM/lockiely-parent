@@ -2,6 +2,8 @@ package org.lockiely.shiro.data;
 
 import java.util.List;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.lockiely.datasource.DynamicDataSource;
+import org.lockiely.datasource.support.DynamicDataSourceProperties;
 import org.lockiely.persistence.entity.User;
 import org.lockiely.shiro.ShiroUser;
 

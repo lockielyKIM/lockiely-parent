@@ -8,6 +8,8 @@ import org.apache.shiro.authc.CredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.util.ByteSource;
+import org.lockiely.datasource.DynamicDataSource;
+import org.lockiely.datasource.support.DynamicDataSourceProperties;
 import org.lockiely.persistence.entity.User;
 import org.lockiely.persistence.entity.enums.ActiveEnum;
 import org.lockiely.persistence.mapper.UserMapper;
@@ -28,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service()
 @DependsOn("springContextHolder")
 @Transactional(readOnly = true, rollbackFor = Exception.class)
+@DynamicDataSource(dataSource = DynamicDataSourceProperties.DYNAMIC_DATA_SOURCE_SLAVE)
 public class ShiroUserImpl implements IShiroUser{
 
     @Autowired
@@ -38,6 +41,7 @@ public class ShiroUserImpl implements IShiroUser{
     }
 
     @Override
+    @DynamicDataSource(dataSource = DynamicDataSourceProperties.DYNAMIC_DATA_SOURCE_SLAVE)
     public User user(String account) {
         User user = userMapper.getByAccount(account);
         if(null == user){

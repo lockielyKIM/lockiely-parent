@@ -111,6 +111,10 @@
       <version>1.2.4</version>
     </dependency>
     <dependency>
+      <artifactId>ehcache</artifactId>
+      <groupId>net.sf.ehcache</groupId>
+    </dependency>
+    <dependency>
       <groupId>org.apache.shiro</groupId>
       <artifactId>shiro-cas</artifactId>
       <version>1.2.4</version>

@@ -94,7 +94,7 @@ public class UserController extends BaseController{
         // 判断账号是否重复
         User theUser = userMapper.getByAccount(user.getAccount());
         if (theUser != null && StringUtils.hasText(theUser.getAccount())) {
-            throw new BusinessException("");
+            throw new BusinessException("当前账号已存在");
         }
 
         // 完善账号信息
@@ -106,6 +106,5 @@ public class UserController extends BaseController{
         userMapper.insert(user);
         return "success";
     }
-
 
 }

@@ -27,6 +27,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.RedisTemplate;
 
 @Configuration
@@ -198,6 +200,7 @@ public class ShiroConfig {
     }
 
     @Bean
+    @DependsOn("lifecycleBeanPostProcessor")
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator(){
         DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
         defaultAdvisorAutoProxyCreator.setProxyTargetClass(true);

@@ -1,10 +1,12 @@
 package org.lockiely.shiro.session;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.session.mgt.SimpleSession;
+import org.lockiely.shiro.ShiroUser;
 
 /**
  * @author: lockiely
@@ -21,6 +23,8 @@ public class RedisSession extends SimpleSession {
     private boolean expired;
     private String host;
     private Map<Object, Object> attributes;
+    private Collection<Object> attributeKeys;
+    private ShiroUser shiroUser;
 
     public RedisSession() {
         this.timeout = DefaultSessionManager.DEFAULT_GLOBAL_SESSION_TIMEOUT;
@@ -111,5 +115,22 @@ public class RedisSession extends SimpleSession {
     @Override
     public void setAttributes(Map<Object, Object> attributes) {
         this.attributes = attributes;
+    }
+
+    @Override
+    public Collection<Object> getAttributeKeys() {
+        return super.getAttributeKeys();
+    }
+
+    public void setAttributeKeys(Collection<Object> attributeKeys) {
+        this.attributeKeys = attributeKeys;
+    }
+
+    public ShiroUser getShiroUser() {
+        return shiroUser;
+    }
+
+    public void setShiroUser(ShiroUser shiroUser) {
+        this.shiroUser = shiroUser;
     }
 }

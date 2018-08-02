@@ -32,25 +32,22 @@ public class DynamicDataSourceInterceptor {
     @Around("pointcut()")
     public Object switchDataSource(ProceedingJoinPoint joinPoint){
         Class<?> className = joinPoint.getTarget().getClass();
+        DynamicDataSource dynamicDataSource = null;
         if(className.isAnnotationPresent(DynamicDataSource.class)){
-            DynamicDataSource dynamicDataSource = className.getAnnotation(DynamicDataSource.class);
-            setDynamicDataSource(dynamicDataSource, joinPoint);
-        }else{
-            if(joinPoint.getSignature() instanceof MethodSignature){
-                Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
-                try {
-                    Method m = className.getMethod(method.getName(), method.getParameterTypes());
-                    if(m.isAnnotationPresent(DynamicDataSource.class)){
-                        DynamicDataSource dynamicDataSource = m.getAnnotation(DynamicDataSource.class);
-                        setDynamicDataSource(dynamicDataSource, joinPoint);
-
-                    }
-                } catch (NoSuchMethodException e) {
-                    LOGGER.error("switch dynamic datasource aop interceptor error " + e.toString());
-
+            dynamicDataSource = className.getAnnotation(DynamicDataSource.class);
+        }
+        if(joinPoint.getSignature() instanceof MethodSignature){
+            Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
+            try {
+                Method m = className.getMethod(method.getName(), method.getParameterTypes());
+                if(m.isAnnotationPresent(DynamicDataSource.class)){
+                    dynamicDataSource = m.getAnnotation(DynamicDataSource.class);
                 }
+            } catch (NoSuchMethodException e) {
+                LOGGER.error("switch dynamic datasource aop interceptor error " + e.toString());
             }
         }
+        setDynamicDataSource(dynamicDataSource, joinPoint);
         try {
             return joinPoint.proceed();
         }catch (Throwable e){
@@ -66,7 +63,8 @@ public class DynamicDataSourceInterceptor {
             DynamicDataSourceContextHolder.setDataSourceLookupKey(DynamicDataSourceProperties.DYNAMIC_DATA_SOURCE_MASTER);
         }else{
             //使用slave数据源
-            if(StringUtils.hasText(dynamicDataSource.slaveNode())){  //指定slave节点
+            //指定slave节点
+            if(StringUtils.hasText(dynamicDataSource.slaveNode())){
                 DynamicDataSourceContextHolder.setDataSourceLookupKey(dynamicDataSource.slaveNode());
             }else {
                 DynamicDataSourceContextHolder.setDataSourceLookupKey(DynamicDataSourceProperties.DYNAMIC_DATA_SOURCE_SLAVE);

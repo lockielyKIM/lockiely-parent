@@ -81,5 +81,5 @@ logging:
 
 #自定义注解
 lockiely:
-  cache-type: redisCache
+  cache-type: ehCache
 

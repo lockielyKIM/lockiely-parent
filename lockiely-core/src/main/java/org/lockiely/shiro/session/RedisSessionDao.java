@@ -1,8 +1,10 @@
 package org.lockiely.shiro.session;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.concurrent.TimeUnit;
 import org.apache.shiro.session.Session;
+import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,11 +44,12 @@ public class RedisSessionDao extends EnterpriseCacheSessionDAO {
         this.shiroSessionPrefix = shiroSessionPrefix;
     }
 
+
     @Override
     protected Serializable doCreate(Session session) {
         Serializable sessionId = super.doCreate(session);
         LOGGER.debug("创建session:{}", session.getId());
-        redisTemplate.opsForValue().set(getFullSessionId(sessionId), session);
+        redisTemplate.opsForValue().set(getFullSessionId(sessionId), session, getExpireTime(), TimeUnit.MINUTES);
         return sessionId;
     }
 
@@ -56,9 +59,12 @@ public class RedisSessionDao extends EnterpriseCacheSessionDAO {
         Session session = super.doReadSession(sessionId);
         if(session == null) {
             session = (Session) redisTemplate.opsForValue().get(getFullSessionId(sessionId));
+            redisTemplate.expire(getFullSessionId(sessionId), getExpireTime(), TimeUnit.MINUTES);
         }
         return session;
     }
+
+
 
     /**
      * 此时的session 用户全局的过期时间
