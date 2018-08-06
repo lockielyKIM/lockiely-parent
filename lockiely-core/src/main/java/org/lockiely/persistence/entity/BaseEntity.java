@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.annotations.Version;
 import com.baomidou.mybatisplus.enums.FieldFill;
 import java.io.Serializable;
+import java.nio.channels.FileLock;
 import java.util.Date;
 import org.lockiely.persistence.entity.enums.ActiveEnum;
 
@@ -15,20 +16,23 @@ public class BaseEntity<T extends Model> extends Model<T> implements Serializabl
 
     private Long id;
 
+    @TableField(fill = FieldFill.INSERT)
     private String createBy;
 
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private String updateBy;
 
-    @TableField(update = "now()")
+    @TableField(fill = FieldFill.INSERT_UPDATE, update = "now()")
     private Date updateTime;
 
     @Version
     private Date version;
 
     @TableLogic
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Integer logicDelete;
 
     private ActiveEnum active;

@@ -30,9 +30,8 @@ public class GlobalExceptionHandler {
     public Object shiroAuthentication(ShiroException e) {
         UserLoginHandler userLoginHandler = new UserLoginHandler();
         if (e instanceof IncorrectCredentialsException) {
-            Integer loginRetryNum = ShiroLocalContextHolder.getAccountLoginRetryNum(ShiroUtils.getUser().getAccount());
             userLoginHandler.setErrorMsg("密码错误");
-            userLoginHandler.setLoginRetryNum(loginRetryNum);
+            userLoginHandler.setLoginRetryNum(ShiroLocalContextHolder.getAccountLoginRetryNum());
             return userLoginHandler;
         }else if(e instanceof ExcessiveAttemptsException) {
             userLoginHandler.setErrorMsg("密码重试超过5次，已锁定");

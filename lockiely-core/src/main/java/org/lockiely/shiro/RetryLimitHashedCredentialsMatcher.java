@@ -47,7 +47,7 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
         if(matches){
             passwordRetryCache.remove(userName);
         }else{
-            ShiroLocalContextHolder.setAccountRetryNum(userName, retryCache.get());
+            ShiroLocalContextHolder.setAccountRetryNum(retryCache.get());
         }
         return matches;
     }

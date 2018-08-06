@@ -11,19 +11,13 @@ import org.springframework.core.NamedThreadLocal;
  */
 public class ShiroLocalContextHolder {
 
-    private final static ThreadLocal<Map<String, Integer>> ACCOUNT_RETRY_NUM = new NamedThreadLocal<>("account login retry num");
+    private final static ThreadLocal<Integer> ACCOUNT_RETRY_NUM = new NamedThreadLocal<>("account login retry num");
 
-    public static Integer getAccountLoginRetryNum(String account){
-        return ACCOUNT_RETRY_NUM.get().get(account);
+    public static Integer getAccountLoginRetryNum(){
+        return ACCOUNT_RETRY_NUM.get();
     }
 
-    public static void setAccountRetryNum(String account, Integer retryNum){
-        if(ACCOUNT_RETRY_NUM.get() != null && ACCOUNT_RETRY_NUM.get().containsKey(account)){
-            ACCOUNT_RETRY_NUM.get().put(account, retryNum);
-        }else{
-            Map<String, Integer> retryMap = new HashMap<>(1);
-            retryMap.put(account, retryNum);
-            ACCOUNT_RETRY_NUM.set(retryMap);
-        }
+    public static void setAccountRetryNum(Integer retryNum){
+        ACCOUNT_RETRY_NUM.set(retryNum);
     }
 }

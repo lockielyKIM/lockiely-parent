@@ -42,7 +42,7 @@ public class ShiroUtils {
         if(user.getSalt()==null){
             user.setSalt(getSalt());
         }
-        String credentialsSalt = user.getUserName() + user.getSalt();
+        String credentialsSalt = user.getAccount() + user.getSalt();
         return new Md5Hash(credentialsSalt);
     }
 
@@ -50,8 +50,8 @@ public class ShiroUtils {
      * 获得加密密码：通过
      * @return
      */
-    public static String getCredentials(User user){
-        String credentials = user.getPassword();
+    public static String getCredentials(User user, String password){
+        String credentials = password;
         ByteSource slat = getCredentialsSalt(user);
         return new SimpleHash(hashAlgorithmName, credentials, slat, hashIterations).toHex();
     }

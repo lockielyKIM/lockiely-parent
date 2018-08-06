@@ -1,6 +1,11 @@
 package org.lockiely.web.controller;
 
+import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import javax.validation.Valid;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.DisabledAccountException;
@@ -28,6 +33,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -85,6 +91,26 @@ public class UserController extends BaseController{
         }
     }
 
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateAccountPassword(@RequestParam("password") String password){
+        if(ShiroUtils.isAuthenticated() || ShiroUtils.getUser() != null) {
+            ShiroUser shiroUser = ShiroUtils.getUser();
+            User user = new User();
+            user.setAccount(shiroUser.getAccount());
+            user.setSalt(ShiroUtils.getSalt());
+            user.setPassword(ShiroUtils.getCredentials(user, password));
+            Wrapper wrapper = Condition.create();
+            wrapper.eq("account", shiroUser.getAccount());
+            userMapper.updateCustomByWrapper(user, wrapper);
+            ShiroUtils.getSubject().logout();
+            return REDIRECT + "/login";
+        }else {
+            String failure = "请登录";
+            return failure;
+        }
+    }
+
     /**
      * 添加管理员
      */
@@ -99,7 +125,7 @@ public class UserController extends BaseController{
 
         // 完善账号信息
         user.setSalt(ShiroUtils.getSalt());
-        user.setPassword(ShiroUtils.getCredentials(user));
+        user.setPassword(ShiroUtils.getCredentials(user, user.getPassword()));
         user.setStatus((Integer) StatusEnum.CREATE.getValue());
         user.setCreateTime(new Date());
         user.setActive(ActiveEnum.ENABLE);

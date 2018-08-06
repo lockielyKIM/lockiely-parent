@@ -24,7 +24,6 @@
         <version>2.1.9</version>
       </dependency>
     </dependencies>
-
   </dependencyManagement>
   <modules>
     <module>lockiely-core</module>

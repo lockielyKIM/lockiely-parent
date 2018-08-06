@@ -17,6 +17,7 @@ import java.util.List;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
 import org.lockiely.datasource.mybatis.DefaultPlusMetaObjectHandler;
+import org.lockiely.persistence.CustomSqlInjector;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -111,7 +112,7 @@ public class MapperConfiguration {
 
     @Bean
     public ISqlInjector sqlInjector(){
-        return new LogicSqlInjector();
+        return new CustomSqlInjector();
     }
 
     @Bean
