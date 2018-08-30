@@ -82,4 +82,11 @@ logging:
 #自定义注解
 lockiely:
   cache-type: ehCache
+  queues:
+    - queue-workorder-track
+    - queue-workorder-track-by-operation
+    - queue-euqinsplan-euqinsbill
+  topics:
+    - topic-workorder-release
+    - topic-workorder-revoke
 

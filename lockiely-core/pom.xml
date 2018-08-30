@@ -64,7 +64,6 @@
     <dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus-boot-starter</artifactId>
-      <version>${mybatis-plus-boot-starter.version}</version>
       <exclusions>
         <exclusion>
           <artifactId>tomcat-jdbc</artifactId>
@@ -124,6 +123,11 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-quartz</artifactId>
       <version>2.0.1.RELEASE</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-activemq</artifactId>
     </dependency>
   </dependencies>
 

@@ -1,5 +1,6 @@
 package org.lockiely.configuration;
 
+import java.util.Map;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = LockielyProperties.LOCKIELY_PREFIX)
@@ -52,6 +53,28 @@ public class LockielyProperties {
      * shiro cache 保存在redis中的前缀
      */
     private String shiroCachePrefix = DEFAULT_SHIRO_CACHE_PREFIX;
+
+    // -------- activemq 相关 ----------
+
+    private Map<String, Object> queues;
+
+    private Map<String, Object> topics;
+
+    public Map<String, Object> getQueues() {
+        return queues;
+    }
+
+    public void setQueues(Map<String, Object> queues) {
+        this.queues = queues;
+    }
+
+    public Map<String, Object> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(Map<String, Object> topics) {
+        this.topics = topics;
+    }
 
     public String getShiroCachePrefix() {
         return shiroCachePrefix;

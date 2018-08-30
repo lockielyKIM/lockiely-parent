@@ -1,6 +1,6 @@
 package org.lockiely.exception;
 
-public class BusinessException extends BaseException{
+public class BusinessException extends PlatformException {
 
     public BusinessException(String msg) {
         super(msg);

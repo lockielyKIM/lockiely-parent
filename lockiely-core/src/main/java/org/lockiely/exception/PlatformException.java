@@ -1,6 +1,6 @@
 package org.lockiely.exception;
 
-public abstract class BaseException extends RuntimeException {
+public class PlatformException extends RuntimeException {
 
     private static final long serialVersionUID = 5439915454935047936L;
 
@@ -9,7 +9,7 @@ public abstract class BaseException extends RuntimeException {
      * Construct a {@code BaseException} with the specified detail message.
      * @param msg the detail message
      */
-    public BaseException(String msg) {
+    public PlatformException(String msg) {
         super(msg);
     }
 
@@ -19,7 +19,7 @@ public abstract class BaseException extends RuntimeException {
      * @param msg the detail message
      * @param cause the nested exception
      */
-    public BaseException(String msg, Throwable cause) {
+    public PlatformException(String msg, Throwable cause) {
         super(msg, cause);
     }
 
@@ -80,8 +80,8 @@ public abstract class BaseException extends RuntimeException {
         if (cause == this) {
             return false;
         }
-        if (cause instanceof BaseException) {
-            return ((BaseException) cause).contains(exType);
+        if (cause instanceof PlatformException) {
+            return ((PlatformException) cause).contains(exType);
         }
         else {
             while (cause != null) {
